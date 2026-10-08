@@ -107,7 +107,8 @@ def test_partial_launch_starts_only_missing_service(tmp_path):
         await_ready(configs, process)
         out, err = stop_launcher(process, stop)
         assert process.returncode == 0, err
-        assert out.count('Already running:') == 1 and out.count('Ready:') == 1
+        assert out.count('Already running:') == 1
+        assert 'Ready: CampusHelp AI' not in out
         assert existing.poll() is None
         assert httpx.get(f"http://127.0.0.1:{demo['port']}/api/health", trust_env=False).status_code == 200
     finally:

@@ -8,7 +8,7 @@ The suite exercises gateway behavior, API contracts, real HTTP weak/hardened exe
 
 Expected reproducible ten-case demo: weak = 2 PASS / 8 FAIL; hardened = 10 PASS / 0 FAIL; eleven real requests each. One failed check concerns an inert plain-text output contract and does not establish executable XSS.
 
-Final automated check: **84 passed, 0 failed, 1 warning**, in **41.82 seconds** using:
+Original full implementation check: **84 passed, 0 failed, 1 warning**, in **41.82 seconds** using:
 
 ```powershell
 .\.runtime\python\python.exe -m pytest -q
@@ -53,3 +53,7 @@ Provider fallback, discovery, retries, JSON parsing and quota errors were tested
 The normal `run_lab.py` launcher was also exercised at its documented ports. `/api/health` and HTML returned HTTP 200 for the platform on port 8000 and CampusHelp on port 8001. Headless Chrome loaded the default workspace overview and saved run history. `pip check` reported no broken requirements.
 
 After PowerShell blocked `Start-Lab.ps1` under the user's execution policy, `Start-Lab.cmd` was added and verified. It selected the project-local Python runtime and launched both servers; both health endpoints and both website pages returned HTTP 200. The verification process tree was stopped afterward, leaving ports 8000 and 8001 available. No execution-policy settings were changed.
+
+The launcher was subsequently made safe to repeat after a user encountered occupied ports. It now identifies healthy existing Lab servers, starts only missing services, checks readiness before reporting success, and reports unrelated port conflicts without a launcher traceback. Cleanup stops only processes created by that invocation. Real-process regressions cover repeated startup, partial startup, preservation of unrelated listeners and startup failure. Running `Start-Lab.cmd` against the user's healthy servers returned exit code 0 and printed both existing URLs; both health checks remained HTTP 200.
+
+Follow-up verification after the launcher fix: the expanded full suite returned **85 passed and 3 browser-startup failures** in 60.56 seconds, with the existing dependency warning. All three failures occurred before browser assertions with `Connection closed while reading from the driver`. The browser suite was rerun separately and **all 3 passed in 15.90 seconds**. All **88 checks**, including four real-process launcher regressions, therefore passed across the full run and browser rerun. No execution policy or existing server process was changed by the launcher verification.
