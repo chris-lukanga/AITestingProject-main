@@ -1,0 +1,57 @@
+# =========================
+# Environment / secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# =========================
+# Test / planner outputs
+# =========================
+outputs/
+checkpoints/
+
+security_test_plan.json
+planner_run_metadata.json
+planner_llm_history.json
+llm_history.json
+
+planner_checkpoint_*.json
+
+# =========================
+# Temporary / debug files
+# =========================
+*.log
+*.tmp
+*.temp
+debug/
+logs/
+.runtime/
+*.sqlite*
+*.db*
+.pytest_cache/
+test-results/
+playwright-report/
+reports/
+
+# =========================
+# IDE / OS
+# =========================
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db

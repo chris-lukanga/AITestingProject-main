@@ -1,0 +1,105 @@
+{
+  "application": {
+    "name": "CampusHelp AI",
+    "description": "An AI assistant for university students that answers questions about registration, fees, modules, academic rules, and campus services.",
+    "purpose": "Provide student support through a conversational assistant.",
+    "deployment": "Web application",
+    "environment": "development"
+  },
+
+  "llm": {
+    "provider": "Google",
+    "model": "Gemini",
+    "model_version": "gemini-2.5-flash",
+    "temperature": 0.2
+  },
+
+  "integration": {
+    "type": "RAG chatbot with memory and tool calling",
+    "system_prompt": true,
+    "conversation_memory": true,
+    "rag_enabled": true,
+    "vector_database": "Pinecone",
+    "tools_enabled": true,
+    "tools": [
+      {
+        "name": "search_student_profile",
+        "description": "Retrieves the authenticated student's profile information."
+      },
+      {
+        "name": "search_academic_documents",
+        "description": "Searches university policies, rules, module guides, and academic documents."
+      },
+      {
+        "name": "create_support_ticket",
+        "description": "Creates a student support ticket."
+      },
+      {
+        "name": "update_support_ticket",
+        "description": "Updates an existing student support ticket."
+      }
+    ],
+    "external_web_access": false
+  },
+
+  "data_access": {
+    "student_information": true,
+    "internal_documents": true,
+    "academic_records": true,
+    "financial_information": true,
+    "payment_card_information": false,
+    "credentials": false
+  },
+
+  "security_controls": {
+    "authentication": true,
+    "authorization": true,
+    "role_based_access_control": true,
+    "input_filtering": true,
+    "output_filtering": false,
+    "rate_limiting": true,
+    "audit_logging": true,
+    "tool_permission_validation": true,
+    "rag_access_filtering": true
+  },
+
+  "previous_failures": [
+    {
+      "description": "The model revealed part of its hidden system instructions after repeated questioning.",
+      "severity": "high",
+      "date": "2026-08-12"
+    },
+    {
+      "description": "A test user received a retrieved document belonging to another student.",
+      "severity": "critical",
+      "date": "2026-08-18"
+    },
+    {
+      "description": "The chatbot created a support ticket with incorrect student information after confusing two conversation turns.",
+      "severity": "medium",
+      "date": "2026-08-25"
+    },
+    {
+      "description": "The model attempted to call the ticket update tool when the user's request only asked for information.",
+      "severity": "high",
+      "date": "2026-09-02"
+    }
+  ],
+
+  "known_components": {
+    "backend": "Python FastAPI",
+    "frontend": "React",
+    "llm_sdk": "google-genai",
+    "rag_framework": "LangChain",
+    "vector_database": "Pinecone",
+    "authentication": "JWT",
+    "database": "PostgreSQL"
+  },
+
+  "testing_scope": {
+    "authorized": true,
+    "environment": "development",
+    "target_url": "http://localhost:8000",
+    "notes": "Testing is authorized against the development environment only. No production systems or real student accounts are included."
+  }
+}
